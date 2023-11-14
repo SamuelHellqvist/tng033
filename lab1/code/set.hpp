@@ -81,4 +81,7 @@ private:
     friend std::ostream& operator<<(std::ostream& os, const Set& rhs);
 
     /* Add Auxiliarly functions, if needed */
+
+    // Insert a new Node after node pointed by ptr
+        void insert(Node* ptr, int value);
 };
