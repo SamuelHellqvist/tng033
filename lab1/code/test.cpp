@@ -306,7 +306,7 @@ int main() {
      * TEST PHASE 9                                      *
      * union, intersection, and difference               *
      ******************************************************/
-    std::cout << "\nTEST PHASE 10: union, intersection, and difference\n";
+    std::cout << "\nTEST PHASE 9: union, intersection, and difference\n";
 
     {
         std::vector<int> A1{1, 3, 5};
