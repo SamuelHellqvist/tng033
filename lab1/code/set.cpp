@@ -58,8 +58,8 @@ Set::Set(const std::vector<int>& elements) : Set() {
     // ADD CODE
     Node* temp = nullptr;
     for (int i = 0; i < std::ssize(elements); i++) {
-        
-        
+
+
         bool isInSet = this->member(elements[i]);
 
         if (isInSet) {
@@ -90,10 +90,10 @@ Set::Set(const std::vector<int>& elements) : Set() {
             newNode->value = elements[i];
             counter++;
 
-            
+
             newNode->next = nullptr;
 
-           
+
             if (temp == nullptr) {
                 head->next = newNode;
             }
@@ -215,21 +215,133 @@ bool Set::is_subset(const Set& b) const {
 // Implement an algorithm similar to the one in exercise 3/Set 1, but don't use vectors
 Set Set::set_union(const Set& b) const {
     // ADD CODE
+    Set a;
+    int count1 = 0;
+    int count2 = 0;
+    Node* ptr1 = head->next;
+    Node* ptr2 = b.head->next;
+    Node* ptr3 = a.head;
 
+    while (count1 < counter && count2 < b.counter) {
 
-    return Set{};  // delete, if needed
+        if (ptr1->value < ptr2->value) {
+            a.insert(ptr3, ptr1->value);
+            ptr1 = ptr1->next;
+            ptr3 = ptr3->next;
+            ++count1;
+
+        }
+        else if (ptr1->value > ptr2->value) {
+            a.insert(ptr3, ptr2->value);
+            ptr2 = ptr2->next;
+            ptr3 = ptr3->next;
+            ++count2;
+
+        }
+        else {
+            a.insert(ptr3, ptr1->value);
+            ptr1 = ptr1->next;
+            ptr2 = ptr2->next;
+            ptr3 = ptr3->next;
+            ++count1;
+            ++count2;
+
+        }
+    }
+        while (count1 < counter) {
+            a.insert(ptr3, ptr1->value);
+            ptr1 = ptr1->next;
+            ptr3 = ptr3->next;
+            ++count1;
+        }
+        while (count2 < b.counter) {
+            a.insert(ptr3, ptr2->value);
+            ptr2 = ptr2->next;
+            ptr3 = ptr3->next;
+            ++count2;
+        }
+    
+    return a;  // delete, if needed
 }
 
 // Return a new Set representing the intersection of Sets *this and b
 Set Set::set_intersection(const Set& b) const {
     // ADD CODE
-    return Set{};  // delete, if needed
+    Set a;
+    int count1 = 0;
+    int count2 = 0;
+    Node* ptr1 = head->next;
+    Node* ptr2 = b.head->next;
+    Node* ptr3 = a.head;
+
+    while (count1 < counter && count2 < b.counter) {
+
+        if (ptr1->value < ptr2->value) {
+            ptr1 = ptr1->next;
+            ++count1;
+
+        }
+        else if (ptr1->value > ptr2->value) {          
+            ptr2 = ptr2->next;
+            ++count2;
+
+        }
+        else {
+            a.insert(ptr3, ptr1->value);
+            ptr1 = ptr1->next;
+            ptr2 = ptr2->next;
+            ptr3 = ptr3->next;
+            ++count1;
+            ++count2;
+
+        }
+    }
+
+    return a;  // delete, if needed
 }
 
 // Return a new Set representing the difference between Set *this and Set b
 Set Set::set_difference(const Set& b) const {
     // ADD CODE
-    return Set{};  // delete, if needed
+    Set a;
+  
+
+    Set intersect = set_intersection(b);
+
+    Node* ptr1 = intersect.head->next;
+    Node* ptr2 = head->next;
+    Node* ptr3 = a.head;
+
+    
+    int count1 = 0;
+    int count2 = 0;
+
+    while (count1 < counter && count2 < intersect.counter){
+        
+        if (ptr1->value != ptr2->value) {
+            a.insert(ptr3, ptr2->value);
+            ptr2 = ptr2->next;
+            ptr3 = ptr3->next;
+            ++count1;
+        }
+
+        else {
+            ptr1 = ptr1->next;
+            ptr2 = ptr2->next;
+            ++count1;
+            ++count2;
+        }
+      
+    }
+
+    while (count1 < counter) {
+        a.insert(ptr3, ptr2->value);
+        ptr2 = ptr2->next;
+        ptr3 = ptr3->next;
+        ++count1;
+    }
+
+    return a;  // delete, if needed
 }
 
 std::ostream& operator<<(std::ostream& os, const Set& rhs) {
@@ -258,4 +370,3 @@ void Set::insert(Node* ptr, int value) {
     ptr->next = newNode;
     ++counter;
 }
-
