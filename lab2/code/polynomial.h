@@ -10,33 +10,40 @@
 #include "expression.h"
 
 class Polynomial : public Expression {
+    // ADD CODE
 
-    Polynomial(double d); //contructor from a constant to a polynomial
+public:
+    explicit Polynomial(const std::vector<double>& v);
+    Polynomial(double d); // not explicit to allow converting from double to Polynomial
 
-    Polynomial(const Polynomial&) = default; //copy constructor
+    //copy constructor
 
-    ~Polynomial() = default;
+    Polynomial(const Polynomial& rhs) = default;
 
-    Polynomial* clone() const override;
+    virtual Polynomial* clone() const;
 
-    Polynomial operator+=(const Polynomial& rhs); //add and assign operator
+    Polynomial& operator=(const Polynomial& rhs) = default;
 
-    Polynomial& operator=(const Polynomial&) = default; //assign operator
+    Polynomial& operator+=(const Polynomial& rhs);
 
-    //2 polynomials added together
-    friend Polynomial operator+(Polynomial lhs, const Polynomial rhs) {
-        return (lhs += rhs);
-    }
+    friend Polynomial operator+(Polynomial lhs, const Polynomial& rhs) {
+        return lhs += rhs;
+    };
 
-    double operator()(double d) const override;
+    double operator[](const int position) const;
+
+    double& operator[](const int position);
+
+    virtual explicit operator std::string() const override;
+    virtual double operator()(double d) const override;
 
 
-    private:
-        std::vector<double> coefficients;
-        void display(std::ostream& os) const override;
+private:
+    std::vector<double> coefficients;
+
+
 };
 
 /*
  * std::vector should be used to store polinomial's coefficients
  */
-
