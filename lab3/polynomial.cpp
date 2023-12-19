@@ -29,6 +29,7 @@ Polynomial::operator std::string() const
 		int i = it->first;
 		int a = it->second;
 		if (counter == 0) {
+			//the first value in the vector
 			if (a > 0) {
 				s += std::format("{}X^{}", a, i);
 			}
@@ -40,6 +41,8 @@ Polynomial::operator std::string() const
 			counter++;
 			continue;
 		}
+
+		//depending on if the number is positive or negative we use + or - in front of it
 		sign = '+';
 		if (a < 0) {
 			sign = '-';
@@ -53,7 +56,7 @@ Polynomial& Polynomial::operator+=(const Polynomial& rhs)
 {
 	for (auto it = rhs.coefficients_table.begin(); it != rhs.coefficients_table.end(); ++it) {
 		
-		
+		//adding together the coefficients in every slot
 		coefficients_table[it->first] += it->second;	
 		
 	}
@@ -61,12 +64,15 @@ Polynomial& Polynomial::operator+=(const Polynomial& rhs)
 	Polynomial newPoly;
 	for (auto it = coefficients_table.begin(); it != coefficients_table.end(); ++it) {
 		if (it->second != 0) {
+
+			//creating a new polynomial with all the coeffiecients from this in it
 			newPoly.coefficients_table[it->first] += it->second;
 
 		}
 	}
 
 	//coefficients_table.clear();
+	//this is now set to the new polynomial, which we later return
 	*this = newPoly;
 
 	return *this;
@@ -127,6 +133,7 @@ Polynomial operator*(Polynomial lhs,const Polynomial& rhs)
 	 return lhs;
 }
 
+//operator that checks if two polynomials are the same
 bool operator==(const Polynomial& lhs,const Polynomial& rhs)
 {
 	return (lhs.coefficients_table == rhs.coefficients_table);
@@ -153,7 +160,6 @@ Polynomial Polynomial::multiply(std::pair<int, int> t)
 }
 
 
-
 Polynomial::Polynomial(const  std::vector<std::pair<int, int>> p) { 
 	std::copy(p.begin(), p.end(), std::inserter(coefficients_table, std::begin(coefficients_table)));
 	
@@ -164,6 +170,7 @@ int Polynomial::degree() const
 	if (coefficients_table.empty()) {
 		return 0;
 	}
+	
 	return coefficients_table.rbegin()->first;
 }
 
